@@ -13,8 +13,8 @@ export class QuestionService {
   constructor(public http: HttpClient) {
     this.questionsUrl = urljoin(environment.apiUrl, 'questions');
   }
-  getQuestions() {
-    return this.http.get(this.questionsUrl);
+  getQuestions( sort = '-createdAt') {
+    return this.http.get(this.questionsUrl + `?sort=${sort}`);
   }
   getQuestion(id) {
     const questionUrl = urljoin(this.questionsUrl, id);

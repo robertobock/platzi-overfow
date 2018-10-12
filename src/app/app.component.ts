@@ -7,7 +7,6 @@ import {AuthService} from './auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'platy-overflow';
   constructor(private authService: AuthService) {}
   isLogedIn() {
     const logged = this.authService.isLogedIn();

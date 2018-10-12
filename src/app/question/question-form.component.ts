@@ -26,7 +26,9 @@ export class QuestionFormComponent {
   onSubmit(form: NgForm) {
     const q: Question = new Question(
       form.value.title,
-      form.value.description
+      form.value.description,
+      new Date(),
+      form.value.icon
     );
     this.questionService.addQuestion(q).subscribe((question: Question) => {
       form.reset();

@@ -1,7 +1,9 @@
 import express from 'express'
 import Debug from 'debug'
-import {findUserByEmail, comparePasswords, createToken, users} from '../midlewares'
 import {secret} from '../config'
+import {createToken} from '../midlewares'
+import {hashSync as hash, compareSync as comparePasswords} from 'bcryptjs'
+import {User} from '../models'
 const debug = new Debug('platzi-overflow:auth')
 const app = express.Router()
 
@@ -12,14 +14,15 @@ const handleError = (res, error) => {
   })
 }
 // POST api/auth/
-app.post('/signin', (req, res, next) => {
+app.post('/signin', async (req, res, next) => {
   const { email, password } = req.body
-  const user = findUserByEmail(email)
+  const user = await User.findOne({email})
+  debug(`User is ${user}`)
   if(!user) {
     debug(`User mail ${email} not found`)
     return handleError(res)
   }
-  if(!comparePasswords(user, password)){
+  if(!comparePasswords(password, user.password)){
     debug(`Provided password ${password} not match with user password ${user.password}`)
     return handleError(res, 'Email and password does not match')
   }
@@ -34,16 +37,16 @@ app.post('/signin', (req, res, next) => {
   })
 })
 
-app.post('/signup', (req, res) => {
+app.post('/signup', async (req, res) => {
+  debug("Creando usuario")
   const {firstName, lastName, email, password} = req.body
-  const user = {
-    _id: +new Date(),
+  const u = new User({
     firstName,
     lastName,
     email,
-    password
-  }
-  users.push(user)
+    password: hash(password, 10)
+  })
+  const user = await u.save()
   const token = createToken(user)
   res.status(201).json({
     message: 'User saved',

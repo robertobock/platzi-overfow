@@ -1,16 +1,17 @@
 <mat-list>
-  <h3 mat-subheader>Preguntas</h3>
   <mat-spinner *ngIf="loading"></mat-spinner>
-  <mat-list-item *ngFor="let question of questions" [routerLink]="['questions',question._id]">
-    <i *ngIf="question.icon === 'none'" mat-list-icon class="material-icons help">help</i>
-    <i *ngIf="question.icon != 'none'" mat-list-icon class="{{question.icon}}"></i>
-    <h4 mat-line>{{question.titulo}}</h4>
-    <p mat-line>
-      <small>
-        {{question.answers.length }} respuestas - {{question.createdAt | amLocale: 'es' | amTimeAgo}}
-      </small>
-    </p>
-  </mat-list-item>
-  <mat-divider></mat-divider>
+  <div *ngIf="!loading">
+    <mat-list-item *ngFor="let question of questions" [routerLink]="['questions',question._id]">
+      <i *ngIf="question.icon === 'none'" mat-list-icon class="material-icons help">help</i>
+      <i *ngIf="question.icon != 'none'" mat-list-icon class="{{question.icon}}"></i>
+      <h4 mat-line>{{question.title}}</h4>
+      <p mat-line>
+        <small>
+          {{question.answers.length }} respuestas - {{question.createdAt | amLocale: 'es' | amTimeAgo}}
+        </small>
+      </p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
 </mat-list>
-<button mat-fab color="accent" class="add-question" [routerLink]="['/questions/new-question']"><mat-icon>add</mat-icon></button>
+
