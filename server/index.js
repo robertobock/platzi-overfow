@@ -1,14 +1,15 @@
 import Debug from 'debug'
 import app from './app'
 import mongoose from "mongoose";
-import {mongoUrl} from "./config";
-const PORT = 3000;
+import {mongoUrl, port} from "./config";
+
 
 const debug = Debug('platzi-overflow:root')
 async function start() {
-  await mongoose.connect(mongoUrl, { useNewUrlParser: true })
-  app.listen(PORT, ()=>{
-    debug(`Escuchando desde el puerto ${PORT}`)
+  await mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true})
+  app.listen(port, ()=>{
+    debug(`Escuchando desde el puerto ${port}`)
+    console.log('Escuchando desde el puerto ' +port)
   })
 }
 start()

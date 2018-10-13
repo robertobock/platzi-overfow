@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'  // the name doesnt matter because im importing the default export from module
 import { question, auth } from './routes'
+import path from 'path'
 const app = express()
 if(process.env.NODE_ENV === 'development') {
   app.use((req, res, next)=>{
@@ -9,6 +10,10 @@ if(process.env.NODE_ENV === 'development') {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
     next()
   })
+}
+
+if(process.env.NODE_ENV === "production"){
+  app.use('/', express.static(path.join(process.cwd(), 'dist/platy-overflow')))
 }
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
